@@ -1,0 +1,154 @@
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper-raised);
+  border-right: 1px solid var(--line);
+  padding: var(--space-5) var(--space-4);
+  gap: var(--space-4);
+}
+
+.sidebar__header {
+  padding: 0 var(--space-1);
+}
+
+.sidebar__new-btn {
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  border-radius: var(--radius);
+  padding: var(--space-2) var(--space-3);
+  font-weight: 500;
+  font-size: 13px;
+  text-align: left;
+  transition: background 0.15s ease;
+}
+
+.sidebar__new-btn:hover {
+  background: var(--accent-soft);
+}
+
+.sidebar__list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0 calc(var(--space-4) * -1);
+  padding: 0 var(--space-2);
+}
+
+.sidebar__hint {
+  color: var(--ink-faint);
+  font-size: 13px;
+  padding: var(--space-2) var(--space-3);
+}
+
+.sidebar__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.sidebar__item:hover {
+  background: var(--paper);
+}
+
+.sidebar__item--active {
+  background: var(--accent-soft);
+}
+
+.sidebar__item-title {
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar__item-date {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  flex-shrink: 0;
+}
+
+.sidebar__footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--line);
+}
+
+.sidebar__io {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.sidebar__io-btn {
+  flex: 1;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink-soft);
+  border-radius: var(--radius);
+  padding: var(--space-2);
+  font-size: 12px;
+}
+
+.sidebar__io-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.sidebar__io-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sidebar__guest {
+  font-size: 12px;
+  color: var(--ink-faint);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.sidebar__guest a {
+  font-weight: 500;
+}
+
+.sidebar__account {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.sidebar__account-email {
+  font-size: 12px;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar__logout {
+  border: none;
+  background: none;
+  color: var(--ink-faint);
+  font-size: 12px;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.sidebar__logout:hover {
+  color: var(--error);
+  text-decoration: underline;
+}
