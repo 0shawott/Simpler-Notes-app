@@ -16,7 +16,7 @@ app.get('/health', (req, res) => {
 // Route mount points — added as each resource is built.
 
 app.use('/auth', require('./routes/auth.routes'));
-// app.use('/notes', require('./routes/notes.routes'));
+app.use('/notes', require('./routes/notes.routes'));
 
 app.use(notFoundHandler);
 app.use(errorHandler);
