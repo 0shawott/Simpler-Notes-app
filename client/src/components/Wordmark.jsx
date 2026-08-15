@@ -5,7 +5,7 @@ import './Wordmark.css';
 function Wordmark({ size = 'md' }) {
   return (
     <div className={`wordmark wordmark--${size}`}>
-      <span className="wordmark__text">leaflet</span>
+      <span className="wordmark__text">hi there</span>
       <svg
         className="wordmark__stroke"
         viewBox="0 0 120 10"

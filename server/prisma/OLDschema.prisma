@@ -24,13 +24,6 @@ model Note {
   title   String @default("Untitled")
   content String @db.Text @default("")
 
-  // Freehand drawing strokes for the layer above the text. Nullable/optional
-  // so existing notes created before this feature don't need backfilling.
-  // Stored as native Postgres JSON (not stringified like `content`, since
-  // Prisma's Json type handles serialization for us) — shape is an array
-  // of stroke objects: { points: [[x, y, pressure], ...], color, size }.
-  drawingData Json?
-
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -40,3 +33,5 @@ model Note {
   @@index([userId])
   @@map("notes")
 }
+
+

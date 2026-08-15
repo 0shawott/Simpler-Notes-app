@@ -1,5 +1,13 @@
 const prisma = require('../lib/prisma');
 
+// Drawing strokes are an array of { points, color, size } objects — this
+// doesn't validate the shape of each stroke in depth (that's the editor's
+// job), just enough to stop obviously malformed data reaching the DB.
+// `null` is allowed too, meaning "no drawing on this note".
+function isValidDrawingData(value) {
+  return value === null || Array.isArray(value);
+}
+
 // GET /notes — all notes belonging to the logged-in user
 async function list(req, res) {
   const notes = await prisma.note.findMany({
@@ -25,12 +33,17 @@ async function getOne(req, res) {
 
 // POST /notes
 async function create(req, res) {
-  const { title, content } = req.body;
+  const { title, content, drawingData } = req.body;
+
+  if (drawingData !== undefined && !isValidDrawingData(drawingData)) {
+    return res.status(400).json({ error: 'drawingData must be an array or null' });
+  }
 
   const note = await prisma.note.create({
     data: {
       title: typeof title === 'string' && title.trim() ? title : 'Untitled',
       content: typeof content === 'string' ? content : '',
+      drawingData: isValidDrawingData(drawingData) ? drawingData : null,
       userId: req.user.id,
     },
   });
@@ -46,13 +59,18 @@ async function update(req, res) {
     return res.status(404).json({ error: 'Note not found' });
   }
 
-  const { title, content } = req.body;
+  const { title, content, drawingData } = req.body;
+
+  if (drawingData !== undefined && !isValidDrawingData(drawingData)) {
+    return res.status(400).json({ error: 'drawingData must be an array or null' });
+  }
 
   const note = await prisma.note.update({
     where: { id: req.params.id },
     data: {
       ...(typeof title === 'string' ? { title } : {}),
       ...(typeof content === 'string' ? { content } : {}),
+      ...(drawingData !== undefined ? { drawingData } : {}),
     },
   });
 
@@ -90,6 +108,7 @@ async function bulkCreate(req, res) {
         data: {
           title: typeof n.title === 'string' && n.title.trim() ? n.title : 'Untitled',
           content: typeof n.content === 'string' ? n.content : '',
+          drawingData: isValidDrawingData(n.drawingData) ? n.drawingData : null,
           userId: req.user.id,
         },
       })
