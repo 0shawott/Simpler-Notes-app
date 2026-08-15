@@ -1,0 +1,36 @@
+
+.wordmark {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.wordmark__text {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.wordmark__stroke {
+  width: 100%;
+  height: 8px;
+  display: block;
+}
+
+.wordmark--md .wordmark__text {
+  font-size: 22px;
+}
+
+.wordmark--md .wordmark__stroke {
+  width: 64px;
+}
+
+.wordmark--lg .wordmark__text {
+  font-size: 32px;
+}
+
+.wordmark--lg .wordmark__stroke {
+  width: 90px;
+  height: 10px;
+}
