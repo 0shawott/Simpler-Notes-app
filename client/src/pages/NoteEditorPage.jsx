@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate, useOutletContext } from 'react-router-dom';
+import TiptapEditor from '../components/TiptapEditor';
+import { parseNoteContent, serializeNoteContent } from '../lib/noteContent';
 import './NoteEditorPage.css';
 
 const AUTOSAVE_DELAY_MS = 800;
@@ -12,17 +14,17 @@ function NoteEditorPage() {
   const note = getNote(id);
 
   const [title, setTitle] = useState(note?.title || '');
-  const [content, setContent] = useState(note?.content || '');
   const [saveState, setSaveState] = useState('idle'); // idle | saving | saved
 
   const saveTimeoutRef = useRef(null);
   const currentIdRef = useRef(id);
 
-  // Reset local editor state whenever the selected note changes.
+  // Reset the title field whenever the selected note changes. The editor
+  // body doesn't need this — it's remounted via `key={id}` below instead,
+  // which re-initializes its content fresh per note.
   useEffect(() => {
     currentIdRef.current = id;
     setTitle(note?.title ?? '');
-    setContent(note?.content ?? '');
     setSaveState('idle');
   }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -34,8 +36,6 @@ function NoteEditorPage() {
       saveTimeoutRef.current = setTimeout(async () => {
         const savingForId = currentIdRef.current;
         await updateNote(savingForId, patch);
-        // Only clear "saving" if the user hasn't already navigated to a
-        // different note in the meantime.
         if (currentIdRef.current === savingForId) {
           setSaveState('saved');
         }
@@ -56,10 +56,8 @@ function NoteEditorPage() {
     scheduleSave({ title: value });
   }
 
-  function handleContentChange(e) {
-    const value = e.target.value;
-    setContent(value);
-    scheduleSave({ content: value });
+  function handleContentChange(doc) {
+    scheduleSave({ content: serializeNoteContent(doc) });
   }
 
   async function handleDelete() {
@@ -95,14 +93,15 @@ function NoteEditorPage() {
         placeholder="Untitled"
       />
 
-      {/* The typing layer. A drawing layer will sit above this as a
-          transparent canvas once that feature is built — content and
-          drawing data will be saved as separate fields on the note. */}
-      <textarea
-        className="editor__content"
-        value={content}
+      {/* key={id} forces a fresh editor instance per note, so switching
+          notes re-initializes content cleanly instead of needing to sync
+          a `content` prop into a live editor mid-typing. A drawing layer
+          will sit above this as a transparent canvas once that feature
+          is built, saved as a separate field alongside this JSON. */}
+      <TiptapEditor
+        key={id}
+        initialContent={parseNoteContent(note.content)}
         onChange={handleContentChange}
-        placeholder="Start writing…"
       />
     </div>
   );

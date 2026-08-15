@@ -1,0 +1,42 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.toolbar__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: none;
+  border-radius: var(--radius);
+  color: var(--ink-soft);
+}
+
+.toolbar__btn:hover:not(:disabled) {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.toolbar__btn--active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.toolbar__btn:disabled {
+  color: var(--ink-faint);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.toolbar__divider {
+  width: 1px;
+  height: 18px;
+  background: var(--line);
+  margin: 0 var(--space-2);
+}
