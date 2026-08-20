@@ -1,5 +1,6 @@
 # Simpler-Notes-app
-A simple web-based Notes app  with a drawing layer and text layer. 
+A simple web-based Notes app
+Drawing Layer maybe added in the future 
 
 [Check it out here](http://simpler-notes.vercel.app/)
 
